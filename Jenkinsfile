@@ -14,47 +14,55 @@ pipeline {
     }
     
     stages {
+
         stage('clean workspace'){
             steps{
                 cleanWs()
             }
-        }		
+        }
+		
         stage('Git Checkout'){
             steps{
                 git branch: 'main', url: 'https://github.com/saeedalig/Netflix-Clone-App.git'
             }
-        }		
-	stage("Sonarqube Analysis"){
+        }
+		
+		stage("Sonarqube Analysis"){
             steps{
                 withSonarQubeEnv('sonar-server') {
                     sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Netflix \
                     -Dsonar.projectKey=Netflix '''
                 }
             }
-        }		
+        }
+		
         stage("Quality Gate Status"){
            steps {
                 script {
                     waitForQualityGate abortPipeline: false, credentialsId: 'Sonar-token' 
                 }
             } 
-        }		
+        }
+		
         stage('Install Dependencies') {
             steps {
                 sh "npm install"
             }
-        }		
+        }
+		
         stage('OWASP FS Scan') {
             steps {
                 dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
             }
-        }		
+        }
+		
         stage('TRIVY FS Scan') {
             steps {
                 sh "trivy fs . > trivy-fs.txt"
             }
         }
+
         stage('Build Docker Image') {
             steps {
                 script {
@@ -66,12 +74,14 @@ pipeline {
                     }
                 }
             }
-        }		
-	stage("TRIVY Image Scan"){
+        }
+		
+		stage("TRIVY Image Scan"){
             steps{
                 sh "trivy image asa96/netflix-clone-app:latest > trivy-image.txt"
             }
-        }		
+        }
+		
         stage('Docker Push') {
             steps {
                 script {
@@ -82,30 +92,33 @@ pipeline {
                     }
                 }
             }
-        }		
-	stage('Delete Docker Images'){
+        }
+		
+		stage('Delete Docker Images'){
             steps {
                 sh "docker rmi $IMAGE_NAME:${BUILD_ID}"
                 sh "docker rmi ${IMAGE_NAME}:latest"
             }
-        }		
-	stage('Update k8s deployment file') {
-		steps {
-			script {
-				// Navigate to manifest directory
-				dir('kubernetes') {
-					// Display the content of the deployment.yml before modification
-					sh "cat deployment.yml"
+        }
+		
+		stage('Update k8s deployment file') {
+			steps {
+				script {
+					// Navigate to manifest directory
+					dir('kubernetes') {
+						// Display the content of the deployment.yml before modification
+						sh "cat deployment.yml"
 
-					// Update the image tag in deployment.yml
-					sh "sed -i \"s|\\(image:.*${APP_NAME}\\).*|\\1:${BUILD_ID}|\" deployment.yml"
-					
-					// Display the content of the deployment.yml after modification
-					sh "cat deployment.yml"
+						// Update the image tag in deployment.yml
+						sh "sed -i \"s|\\(image:.*${APP_NAME}\\).*|\\1:${BUILD_ID}|\" deployment.yml"
+
+						// Display the content of the deployment.yml after modification
+						sh "cat deployment.yml"
 					}
 				}
 			}
-		}		
+		}
+		
 		stage('Push the changed deployment file to GitHub') {
 			steps {
 				script {
