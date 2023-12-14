@@ -17,7 +17,7 @@ The Netflix Clone project aims to replicate the core functionalities of the popu
 
 - As soon as the PR is opened, the `webhook` integrated with Jenkins, triggers the Jenkins Job and perform the specified tasks.
 
-![Alt Text](../../../images/netflix-clone.png)
+![Alt Text](../../../../images/netflix-clone.png)
 
 - ***Version Control (GitHub):*** Used GitHub for source code repository, enabling version control and collaboration among development teams.
 
