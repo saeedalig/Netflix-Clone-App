@@ -238,13 +238,16 @@ I will only be dealing here Kubernetes monitoring with Prometheus by using `helm
 **-> Install Node Exporter using Helm:**
 To begin monitoring your Kubernetes cluster, you need to install the Prometheus Node Exporter. This component allows you to collect system-level metrics from your cluster nodes. Here are the steps to install the Node Exporter using Helm:
 
-```# Add the Prometheus Community Helm repository:
+```
+# Add the Prometheus Community Helm repository:
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 ```
-```# Create a Kubernetes namespace for the Node Exporter:
+```
+# Create a Kubernetes namespace for the Node Exporter:
 kubectl create namespace prometheus-node-exporter
 ```
-```# Install the Node Exporter using Helm:
+```
+# Install the Node Exporter using Helm:
 helm install prometheus-node-exporter prometheus-community/prometheus-node-exporter --namespace prometheus-node-exporter
 ```
 
