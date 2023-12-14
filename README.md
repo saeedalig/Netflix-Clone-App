@@ -6,8 +6,8 @@ The Netflix Clone project aims to replicate the core functionalities of the popu
 - Integrated GitOps principles with ArgoCD for managing and automating Kubernetes deployments through Git repositories. This approach enhances collaboration and ensures consistency in the deployment process.
 
 ## Branching Strategy:
-Choosing an appropriate branching strategy for CI/CD is essential for a smooth development and release process. The choice of branching strategy often depends on factors such as team size, project complexity, release frequency, and collaboration needs. For simplicity, I have created two branches `main` and `ataging`.
-Users will push all changes to the `staging branch`. The owner of the `main branch` wiil first review the chnages and then merge the chnages into `main branch` by raising a *Pull Request*. As soon as the PR is opened, the `webhook` integrated with Jenkins, triggers the Jenkins Job and perform the specified tasks.
+Choosing an appropriate branching strategy for CI/CD is essential for a smooth development and release process. The choice of branching strategy often depends on factors such as team size, project complexity, release frequency, and collaboration needs. For simplicity, I have created two branches `main` and `staging`.
+Users will push all changes to the `staging branch`. The owner of the `main branch` wiil first review the chnages and then merge the chnages into `main branch` by raising a ***Pull Request***. As soon as the PR is opened, the `webhook` integrated with Jenkins, triggers the Jenkins Job and perform the specified tasks.
 
 
 - ***Version Control (GitHub):*** Used GitHub for source code repository, enabling version control and collaboration among development teams.
