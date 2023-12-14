@@ -183,7 +183,7 @@ pipeline {
 
 					// Push the changes to the GitHub repository
 					withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-						sh 'git remote set-url origin https://$USER:$PASS@github.com/saeedalig/youtube-clone-app.git'
+						sh 'git remote set-url origin https://$USER:$PASS@github.com/saeedalig/Netflix-Clone-App.git'
 						sh 'git push origin main'
 					}
 				}
@@ -203,5 +203,58 @@ pipeline {
 	}
 }
 ```
+# Installation of ArgoCD
+```
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+# Service
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "NodePort"}}'
+kubectl port-forward svc/argocd-server -n argocd 8085:443
+
+# passwd
+argocd admin initial-password -n argocd
+```
+You can also install ArgoCD on your Kubernetes cluster by following the instructions provided in the official documentation.
+
+**Set Your GitHub Repository as a Source:**
+After installing ArgoCD, you need to set up your GitHub repository as a source for your application deployment. This typically involves configuring the connection to your repository and defining the source for your ArgoCD application. The specific steps will depend on your setup and requirements.
+
+***Create an ArgoCD Application:***
+
+- ***name:*** Set the name for your application.
+- ***destination:*** Define the destination where your application should be deployed.
+- ***project:*** Specify the project the application belongs to.
+- ***source:*** Set the source of your application, including the GitHub repository URL, revision, and the path to the application within the repository.
+- ***syncPolicy:*** Configure the sync policy, including automatic syncing, pruning, and self-healing.
+  
+Access your Application on defined port.
+
+
+# Monitoring
+I've well documented the prometheus and Grafana setup to scape the metrics from Jenkins and Node servers [here](https://github.com/saeedalig/DevOps-Project/tree/main/Server-Setup-For-Pipeline).
+I will only be dealing here Kubernetes monitoring with Prometheus by using `helm` package manager.
+
+**-> Install Node Exporter using Helm:**
+To begin monitoring your Kubernetes cluster, you need to install the Prometheus Node Exporter. This component allows you to collect system-level metrics from your cluster nodes. Here are the steps to install the Node Exporter using Helm:
+
+```# Add the Prometheus Community Helm repository:
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+```
+```# Create a Kubernetes namespace for the Node Exporter:
+kubectl create namespace prometheus-node-exporter
+```
+```# Install the Node Exporter using Helm:
+helm install prometheus-node-exporter prometheus-community/prometheus-node-exporter --namespace prometheus-node-exporter
+```
+
+Update your Prometheus configuration (prometheus.yml) to add a new job for scraping metrics from nodeip:9001/metrics. You can do this by adding the following configuration to your prometheus.yml file:
+```
+  - job_name: 'Netflix'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['node1Ip:9100']
+```
+Replace the nodeIp and job-name. Don't forget to reload or restart Prometheus to apply these changes to your configuration.
 
 ***You can follow the detailed [Server Setup For Pipeline](https://github.com/saeedalig/DevOps-Project/tree/main/Server-Setup-For-Pipeline) guide.Feel free to use by customizing it as per your needs.***
