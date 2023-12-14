@@ -42,10 +42,7 @@ The Netflix Clone project aims to replicate the core functionalities of the popu
 
 - ***Email Notification:*** Configured email notifications in Jenkins to notify stakeholders about the status of builds and deployments, facilitating communication within the development team.
 
-[![Video Tutorial](https://img.youtube.com/vi/g8X5AoqCJHc/0.jpg)](https://youtu.be/g8X5AoqCJHc)
-
-
-You can follow the [Server Setup For Pipeline](https://github.com/saeedalig/DevOps-Project/tree/main/Server-Setup-For-Pipeline) guide.Feel free to use by customizing it as per your needs.
+You can follow the detailed [Server Setup For Pipeline](https://github.com/saeedalig/DevOps-Project/tree/main/Server-Setup-For-Pipeline) guide.Feel free to use by customizing it as per your needs.
 
 # Pipeline Script
 
