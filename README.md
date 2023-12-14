@@ -29,7 +29,7 @@ pipeline {
             }
         }
 		
-		stage("Sonarqube Analysis"){
+	stage("Sonarqube Analysis"){
             steps{
                 withSonarQubeEnv('sonar-server') {
                     sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Netflix \
@@ -78,7 +78,7 @@ pipeline {
             }
         }
 		
-		stage("TRIVY Image Scan"){
+	stage("TRIVY Image Scan"){
             steps{
                 sh "trivy image asa96/netflix-clone-app:latest > trivy-image.txt"
             }
@@ -96,7 +96,7 @@ pipeline {
             }
         }
 		
-		stage('Delete Docker Images'){
+	stage('Delete Docker Images'){
             steps {
                 sh "docker rmi $IMAGE_NAME:${BUILD_ID}"
                 sh "docker rmi ${IMAGE_NAME}:latest"
@@ -152,7 +152,7 @@ pipeline {
 					"Build Number: ${env.BUILD_NUMBER}<br/>" +
 					"URL: ${env.BUILD_URL}<br/>",
 				to: 'zeal999@gmail.com',
-				attachmentsPattern: 'trivyfs.txt,trivyimage.txt'
+				attachmentsPattern: 'trivy-fs.txt,trivy-image.txt'
 			}
 		}
 	}
