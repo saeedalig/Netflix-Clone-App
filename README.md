@@ -232,8 +232,8 @@ Access your Application on defined port.
 
 
 # Monitoring
-I've well documented the prometheus and Grafana setup to scape the metrics from Jenkins and Node servers [here](https://github.com/saeedalig/DevOps-Project/tree/main/Server-Setup-For-Pipeline).
-I will only be dealing here Kubernetes monitoring with Prometheus by using `helm` package manager.
+I've well documented the prometheus and Grafana setup to scrape the metrics from Jenkins and Node servers [here](https://github.com/saeedalig/DevOps-Project/tree/main/Server-Setup-For-Pipeline).
+I will only be dealing here with Kubernetes monitoring with Prometheus by using `helm` package manager.
 
 **-> Install Node Exporter using Helm:**
 To begin monitoring your Kubernetes cluster, you need to install the Prometheus Node Exporter. This component allows you to collect system-level metrics from your cluster nodes. Here are the steps to install the Node Exporter using Helm:
